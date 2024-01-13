@@ -1,13 +1,17 @@
-
+import * as C from './App.styles'
 
 
 
 
 const App = () => {
   return (
-    <div>
-      npm
-    </div>
+    <C.Container>
+      <C.Area>
+        <C.Header>
+          App Gallery
+        </C.Header>
+      </C.Area>
+    </C.Container>
   )
 }
 
