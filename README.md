@@ -1,6 +1,6 @@
 
 
-Esse Projeto foi criado com npm create vite@latest
+ criado com npm create vite@latest
 
 usando typescript + SWC , depois voce pode instalar bibliotecas como STYLE-COMPONENTS 
 npm install styled-components
