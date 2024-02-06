@@ -1,6 +1,6 @@
 import { Photo } from './type/Photo';
 import { storage } from '../libs/Firebase';
-import { ref, listAll, getDownloadURL, uploadBytes } from 'firebase/storage';
+import { ref, listAll, getDownloadURL, uploadBytes , deleteObject } from 'firebase/storage';
 import { v4  as CreateId} from 'uuid'
 
 export const getAll = async () => {
@@ -9,6 +9,8 @@ export const getAll = async () => {
 
     const imageFolder = ref(storage, 'images');
     const photolist = await listAll(imageFolder);
+
+    console.log(photolist.items)
 
     for (const item of photolist.items) {
       try {
@@ -30,14 +32,21 @@ export const getAll = async () => {
 };
 
 
-
-
+export const deletePhoto = async (photoName: string): Promise<void> => {
+  try {
+    const imageRef = ref(storage, `images/${photoName}`);
+    await deleteObject(imageRef);
+    console.log(`Foto ${photoName} excluída com sucesso.`);
+  } catch (error) {
+    console.error(`Erro ao excluir foto ${photoName}:`, error);
+    throw error;
+  }
+};
 
 
 export const insert = async (file: File) => {
 
     if(['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)){
-
 
         const randomName = CreateId()
         const newFile = ref(storage, `images/${randomName}`)
@@ -45,7 +54,6 @@ export const insert = async (file: File) => {
         const upload = await uploadBytes(newFile,file)
         const photoUrl = await getDownloadURL(upload.ref)
         
-
         return {
             name:upload.ref.name,
             url:photoUrl
